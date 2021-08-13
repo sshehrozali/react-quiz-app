@@ -1,4 +1,29 @@
+*{
+    overflow: hidden;
+}
 body{
     width: 100vw;
     height: 100vh;
+
+    background: #161616 !important;
 }
+
+.round{
+    background: #B3001B !important;
+
+}
+
+.input{
+    background: #1a1a1a !important;
+    border: 1px solid rgb(255, 72, 0) !important;
+
+    box-shadow:  20px 20px 60px #161616,
+             -20px -20px 60px #1e1e1e !important;
+}
+
+.score{
+    color: white;
+    background: black;
+    padding: 1rem;
+}
+
