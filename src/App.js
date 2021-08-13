@@ -63,66 +63,71 @@ function App() {
 
   // Check the user submitted Answer
   function checkAnswer(event) {
-    // If event is triggered
-    if (event.key == "Enter") {
-      let CurrentRound;
+    let CurrentRound;
 
-      if (state.round.length != 9) {
-        CurrentRound = parseInt(state.round[state.round.length - 1]);   // Findout Current Round
-        console.log(state.round.length);
-      }
-      if (state.round.length == 9) {
-        CurrentRound = 10;
-      }
+    if (state.round.length != 9) {
+      CurrentRound = parseInt(state.round[state.round.length - 1]);   // Findout Current Round
+      console.log(state.round.length);
+    }
+    if (state.round.length == 9) {
+      CurrentRound = 10;
+    }
 
-      // Continue game
-      if (CurrentRound < TotalRounds) {
-        console.log("In current round");
+    // Continue game
+    if (CurrentRound < TotalRounds) {
+      console.log("In current round");
 
-        // Round 8 - 10 (Expert Difficulty)
-        if (CurrentRound > 7) {
-          updateQuestion(1000, "red");
-        };
-
-        // Round 5 - 7 (Medium Difficulty)
-        if (CurrentRound > 4 && CurrentRound <= 7) {
-          updateQuestion(100, "blue");
-        };
-
-        // Round 1 - 4 (Normal Difficulty)
-        if (CurrentRound <= 4) {
-          updateQuestion(10, "green");
-        };
-      }
-
-      // When Final Round is Finished
-      if (CurrentRound == TotalRounds) {
-        console.log("In Final Round")
-
-        let CorrectAns = state.num1 + state.num2;
-        if (parseInt(state.ans) == CorrectAns) {
-          setState({
-            ...state,
-            round: "Game is Finished!",
-            score: state.score + 1,
-            difficulty: document.querySelector("body").classList.add("end")
-          });
-        }
-        else {
-          setState({
-            ...state,
-            round: "Game is Finished!",
-            difficulty: document.querySelector("body").classList.add("end")
-          });
-        };
-
-        // TODO
-
+      // Round 8 - 10 (Expert Difficulty)
+      if (CurrentRound > 7) {
+        updateQuestion(1000, "red");
       };
 
-    };
+      // Round 5 - 7 (Medium Difficulty)
+      if (CurrentRound > 4 && CurrentRound <= 7) {
+        updateQuestion(100, "blue");
+      };
 
+      // Round 1 - 4 (Normal Difficulty)
+      if (CurrentRound <= 4) {
+        updateQuestion(10, "green");
+      };
+    }
+
+    // When Final Round is Finished
+    if (CurrentRound == TotalRounds) {
+      console.log("In Final Round")
+
+      let CorrectAns = state.num1 + state.num2;
+      if (parseInt(state.ans) == CorrectAns) {
+        setState({
+          ...state,
+          round: "Game is Finished!",
+          score: state.score + 1,
+          difficulty: document.querySelector("body").classList.add("end")
+        });
+      }
+      else {
+        setState({
+          ...state,
+          round: "Game is Finished!",
+          difficulty: document.querySelector("body").classList.add("end")
+        });
+      };
+
+      // TODO
+
+    };
   };
+
+// If event is triggered
+function callNextEnterKey(event) {
+  if (event.key == "Enter") {
+    checkAnswer();
+  };
+};
+function callNextBtnClick() {
+  checkAnswer();
+};
 
   // Main Quiz Window
   return (
@@ -131,22 +136,22 @@ function App() {
         <div className="row d-flex flex-column justify-content-center align-items-center">
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <h1 className="display-4 text-white p-3 rounded mb-5 text-center round">{state.round}</h1>
-            <div className="mb-5 fs-4 text-white">Ques. {state.num1} + {state.num2} ?</div>
+            <div className="mb-5 fs-4 text-white rounded px-3 question">Ques. {state.num1} + {state.num2} ?</div>
 
-              <div className="row d-flex flex-row justify-content-center">
-                <div className="col-12 d-flex flex-row justify-content-center">
-                  <input className="input text-white mx-1 mx-sm-1 mx-md-1 mx-lg-3 py-2 px-0 px-sm-0 px-md-0 px-lg-4 fs-4 text-center rounded mt-2" value={state.ans} onChange={updateAnswer} onKeyPress={checkAnswer}
-                    type="text" autoFocus />
-                  <button class="btn btn-success px-3 px-sm-3 px-md-3 px-lg-4 fs-1" type="button" id="button-addon2">✔</button>
-                </div>
+            <div className="row d-flex flex-row justify-content-center">
+              <div className="col-12 d-flex flex-row justify-content-center">
+                <input className="input text-white mx-1 mx-sm-1 mx-md-1 mx-lg-3 py-2 px-0 px-sm-0 px-md-0 px-lg-4 fs-4 text-center rounded mt-2" value={state.ans} onChange={updateAnswer} onKeyPress={callNextEnterKey}
+                  type="text" autoFocus />
+                <button class="btn btn-success px-3 px-sm-3 px-md-3 px-lg-4 fs-1" type="button" id="button-addon2" onClick={callNextBtnClick}>✔</button>
               </div>
-
-              <div className="score mt-5 fw-bold rounded" placeholder="Enter Your Answer Here">Score: {state.score}</div>
             </div>
+
+            <div className="score mt-5 fw-bold rounded" placeholder="Enter Your Answer Here">Score: {state.score}</div>
           </div>
         </div>
+      </div>
     </body>
-      );
+  );
 }
 
-      export default App;
+export default App;
