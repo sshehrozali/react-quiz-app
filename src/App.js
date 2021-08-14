@@ -1,13 +1,26 @@
 import { stat } from 'fs';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './App.css'
-import './css/normalLevel.css'
-import './css/mediumLevel.css'
-import './css/expertLevel.css'
-import './css/finishedLevel.css'
+import {Howl} from 'howler';
+import './App.css';
+import './css/normalLevel.css';
+import './css/mediumLevel.css';
+import './css/expertLevel.css';
+import './css/finishedLevel.css';
+import CorrectSFX from './misc/Correct_SFX.mov';
+import WrongSFX from './misc/Wrong_SFX.mov';
+import FinishSFX from './misc/FinishedStage_SFX.mp3';
 
 function App() {
+
+  // Play BG SFX
+  function playSound(src) {
+    const Sound = new Howl({
+      src,
+      html5: true
+    });
+    Sound.play();
+  };
 
   // Total Number of Rounds in Quiz
   const TotalRounds = 10;
@@ -19,7 +32,8 @@ function App() {
     num2: 2,
     ans: "",
     score: 0,
-    difficulty: document.querySelector("body").classList.add("green")
+    difficulty: document.querySelector("body").classList.add("green"),
+    sound: ""
   });
 
   // Update the input field what ever the user has typed in
@@ -45,7 +59,8 @@ function App() {
         num2: Math.floor((Math.random() * `${difficulty}`) + 1),
         ans: "",
         score: state.score + 1,
-        difficulty: document.querySelector("body").classList.add(`${level}`)
+        difficulty: document.querySelector("body").classList.add(`${level}`),
+        sound: playSound(CorrectSFX)
       });
     }
 
@@ -56,18 +71,19 @@ function App() {
         num2: Math.floor((Math.random() * 10) + 1),
         ans: "",
         score: state.score,
-        difficulty: document.querySelector("body").classList.add(`${level}`)
+        difficulty: document.querySelector("body").classList.add(`${level}`),
+        sound: playSound(WrongSFX)
       });
     };
   };
 
   // Check the user submitted Answer
   function checkAnswer(event) {
-    let CurrentRound;
 
+    // Findout Current Round
+    let CurrentRound;
     if (state.round.length != 9) {
-      CurrentRound = parseInt(state.round[state.round.length - 1]);   // Findout Current Round
-      console.log(state.round.length);
+      CurrentRound = parseInt(state.round[state.round.length - 1]);
     }
     if (state.round.length == 9) {
       CurrentRound = 10;
@@ -75,7 +91,6 @@ function App() {
 
     // Continue game
     if (CurrentRound < TotalRounds) {
-      console.log("In current round");
 
       // Round 8 - 10 (Expert Difficulty)
       if (CurrentRound > 7) {
@@ -103,14 +118,16 @@ function App() {
           ...state,
           round: "Game is Finished!",
           score: state.score + 1,
-          difficulty: document.querySelector("body").classList.add("end")
+          difficulty: document.querySelector("body").classList.add("end"),
+          sound: playSound(FinishSFX)
         });
       }
       else {
         setState({
           ...state,
           round: "Game is Finished!",
-          difficulty: document.querySelector("body").classList.add("end")
+          difficulty: document.querySelector("body").classList.add("end"),
+          sound: playSound(FinishSFX)
         });
       };
 
