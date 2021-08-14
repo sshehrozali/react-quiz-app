@@ -12,16 +12,7 @@ import WrongSFX from './misc/Wrong_SFX.mov';
 import FinishSFX from './misc/FinishedStage_SFX.mp3';
 
 function App() {
-
-  // Play BG SFX
-  function playSound(src) {
-    const Sound = new Howl({
-      src,
-      html5: true
-    });
-    Sound.play();
-  };
-
+  
   // Total Number of Rounds in Quiz
   const TotalRounds = 10;
 
@@ -33,8 +24,21 @@ function App() {
     ans: "",
     score: 0,
     difficulty: document.querySelector("body").classList.add("green"),
-    sound: ""
+    sound: "",
   });
+
+  // COUNTDOWN TIMER
+  const [count, setCount] = React.useState(10);
+  
+
+  // Play BG SFX
+  function playSound(src) {
+    const Sound = new Howl({
+      src,
+      html5: true
+    });
+    Sound.play();
+  };
 
   // Update the input field what ever the user has typed in
   function updateAnswer(event) {
@@ -60,7 +64,7 @@ function App() {
         ans: "",
         score: state.score + 1,
         difficulty: document.querySelector("body").classList.add(`${level}`),
-        sound: playSound(CorrectSFX)
+        sound: playSound(CorrectSFX),
       });
     }
 
@@ -72,12 +76,12 @@ function App() {
         ans: "",
         score: state.score,
         difficulty: document.querySelector("body").classList.add(`${level}`),
-        sound: playSound(WrongSFX)
+        sound: playSound(WrongSFX),
       });
     };
   };
 
-  // Check the user submitted Answer
+  // Called when user clicks the button or press Enter on the keyboard
   function checkAnswer(event) {
 
     // Findout Current Round
@@ -136,20 +140,21 @@ function App() {
     };
   };
 
-// If event is triggered
-function callNextEnterKey(event) {
-  if (event.key == "Enter") {
+  // If event is triggered
+  function callNextEnterKey(event) {
+    if (event.key == "Enter") {
+      checkAnswer();
+    };
+  };
+  function callNextBtnClick() {
     checkAnswer();
   };
-};
-function callNextBtnClick() {
-  checkAnswer();
-};
 
   // Main Quiz Window
   return (
     <body className="d-flex flex-column justify-content-center align-items-center">
       <div className="container">
+        <p className="display-6 text-white text-center">{count}</p>
         <div className="row d-flex flex-column justify-content-center align-items-center">
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <h1 className="display-4 text-white p-3 rounded mb-5 text-center round">{state.round}</h1>
