@@ -27,10 +27,6 @@ function App() {
     sound: "",
   });
 
-  // COUNTDOWN TIMER
-  const [count, setCount] = React.useState(10);
-  
-
   // Play BG SFX
   function playSound(src) {
     const Sound = new Howl({
@@ -154,7 +150,6 @@ function App() {
   return (
     <body className="d-flex flex-column justify-content-center align-items-center">
       <div className="container">
-        <p className="display-6 text-white text-center">{count}</p>
         <div className="row d-flex flex-column justify-content-center align-items-center">
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <h1 className="display-4 text-white p-3 rounded mb-5 text-center round">{state.round}</h1>
